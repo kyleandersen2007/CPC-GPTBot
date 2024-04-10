@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>CrestwoodGPT</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+
+</head>
+
+<body>
+  <div class="chat-title">
+    <i class="fas fa-robot robot-icon"></i>
+    <h1>CrestwoodGPT Chat</h1>
+  </div>
+  <div class="container chat-container">
+    <div class="card chat-card">
+      <div class="card-header chat-header">
+        <div class="d-flex align-items-center">
+          <div>
+            <img src="static/max.jpg" alt="User" class="rounded-circle" style="width: 40px; height: 40px;">
+          </div>
+          <div class="ml-2">
+            <span>Max Spillner</span>
+            <p>Ask me anything!</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-body chat-body" id="messageFormeight"></div>
+      <div class="card-footer">
+        <form id="messageArea" class="input-group" action="/get" method="POST">
+          <input type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off"
+            class="form-control">
+          <div class="input-group-append">
+            <button type="submit" id="send" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Send
+            </button>
+          </div>
+        </form>
+      </div>
+      </form>
+    </div>
+  </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#messageArea").on("submit", function (event) {
+        event.preventDefault();
+
+        const date = new Date();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+        const str_time = hour + ":" + minute;
+        var rawText = $("#text").val();
+
+        var userHtml =
+          '<div class="d-flex justify-content-end mb-4"><div class="message user-message">' +
+          rawText +
+          '<div class="message-time">' +
+          str_time +
+          '</div></div>';
+
+        $("#text").val("");
+        $("#messageFormeight").append(userHtml);
+
+        $.ajax({
+          data: {
+            msg: rawText,
+          },
+          type: "POST",
+          url: "/get",
+        }).done(function (data) {
+          var botHtml =
+            '<div class="d-flex justify-content-start mb-4"><div class="message bot-message">' +
+            data +
+            '<div class="message-time">' +
+            str_time +
+            "</div></div>";
+          $("#messageFormeight").append(botHtml);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
