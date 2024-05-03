@@ -60,7 +60,6 @@ html {
     background-color: #007bff;
     color: white;
     align-self: flex-end;
-    /* Align user messages to the left */
     text-align: right;
 }
 
@@ -68,7 +67,6 @@ html {
     background-color: #00cc00;
     color: white;
     align-self: flex-end;
-    /* Align bot messages to the right */
 }
 
 .message-time {
